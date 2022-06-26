@@ -43,7 +43,7 @@ If you need to update `npm`, you can make it using `npm`! Cool right? After runn
 ## Install
 
     $ git clone https://github.com/sanket-hepta/fashion_nodejs_api
-    $ cd PROJECT_TITLE
+    $ cd fashion_nodejs_api
     $ yarn install
 
 ## Configure app
