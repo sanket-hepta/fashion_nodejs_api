@@ -10,6 +10,8 @@ dotenv.config();
 const authRoute = require("./routes/auth");
 const categoryRoute = require("./routes/category");
 const productRoute = require('./routes/product');
+const cartRoute = require('./routes/cart');
+const orderRoute = require('./routes/order');
 
 //-------------------------------Define Middleweares------------------
 const errorHandler = require("./middleweares/errorHandler");
@@ -25,6 +27,8 @@ app.use(cors());
 app.use("/api/auth", authRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/products", productRoute);
+app.use("/api/cart", cartRoute);
+app.use("/api/order", orderRoute);
 
 app.use(errorHandler);
 
