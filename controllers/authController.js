@@ -9,10 +9,10 @@ const register = async (request, response, next) => {
         let user = request.body;
         let result = await authRepository.register(user);
         if(result){
-            let customObj = { status: true, statusCode: 201, message: "Success.", result : {data: result}}
+            let customObj = { status: true, statusCode: 200, message: "User Register Successfully. Please Login.", result : {data: result}}
             next(customObj);
         }else{
-            let customObj = { status: true, statusCode: 401, message: "Failed to save the data."}
+            let customObj = { status: false, statusCode: 200, message: "Failed to save the data."}
             next(customObj);
         }
     }catch(error){
@@ -28,7 +28,7 @@ const login = async (request, response, next) => {
         if(!result){
             let error = new Error("Invalid email id or password");
             error.status = false;
-            error.statusCode = 403;
+            error.statusCode = 200;
             throw error;
         }else{
             let customObj = { status: true, statusCode: 200, message: "Success.", result : {data: result}}
@@ -40,7 +40,46 @@ const login = async (request, response, next) => {
     }
 }
 
+const getUser = async (request, response, next) => {
+    try{
+        let data = request.params.id;
+        let result = await authRepository.getUser(data);
+        if(result){
+            let customObj = { status: true, statusCode: 200, message: "Success", result : {data: result}}
+            next(customObj);
+        }else{
+            let customObj = { status: false, statusCode: 200, message: "Failed to get the data."}
+            next(customObj);
+        }
+    }catch(error){
+        next(error);
+    }
+}
+
+const updateUser = async (request, response, next) => {
+    try{
+        let a = request.body;
+        let data = {};
+        data.id = a.id;
+        delete a.id;
+        data.updateData = a;
+        let result = await authRepository.updateUser(data);
+        console.log(result);
+        if(result){
+            let customObj = { status: true, statusCode: 200, message: "Record updated successfully."}
+            next(customObj);
+        }else{
+            let customObj = { status: false, statusCode: 200, message: "Failed to update the data."}
+            next(customObj);
+        }
+    }catch(error){
+        next(error);
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getUser,
+    updateUser
 }

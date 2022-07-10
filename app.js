@@ -8,6 +8,8 @@ dotenv.config();
 
 //-------------------------------Routes------------------------------
 const authRoute = require("./routes/auth");
+const categoryRoute = require("./routes/category");
+const productRoute = require('./routes/product');
 
 //-------------------------------Define Middleweares------------------
 const errorHandler = require("./middleweares/errorHandler");
@@ -21,6 +23,8 @@ app.use(cors());
 
 //-----------------------------Use Router to define endpoint-----------------
 app.use("/api/auth", authRoute);
+app.use("/api/categories", categoryRoute);
+app.use("/api/products", productRoute);
 
 app.use(errorHandler);
 

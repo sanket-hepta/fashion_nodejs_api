@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const Users = require('../models/users');
+const users = require('../models/users');
 const jwt = require('jsonwebtoken');  
 const dotenv = require("dotenv");
 dotenv.config();
@@ -11,14 +11,14 @@ const register = async (data) => {
     const hasPassword = await bcrypt.hash(data.password, salt);
     data.password = hasPassword;
     try{
-        return await Users.insertMany(data);
+        return await users.insertMany(data);
     }catch(error){
         return error;
     }
 }
 
 const login = async (data) => {
-    let user = await Users.findOne({email: data.email});
+    let user = await users.findOne({email: data.email});
     if(user){
         let validPassword = await bcrypt.compare(data.password, user.password);
         if(!validPassword){
@@ -27,7 +27,7 @@ const login = async (data) => {
             const {password, __v, ...userRes} = user._doc;
             const token = await jwt.sign({
                 "email":user.email,
-                "type_of_user":user.isAdmin
+                "isAdmin":user.isAdmin
             }, process.env.SECRET_PASSPHRASE);
 
             userRes.token = await token;
@@ -38,7 +38,24 @@ const login = async (data) => {
     }
 }
 
+const getUser = async (id) => {
+    return await users.findOne(
+        {_id: id}
+    ).select({__v:0});
+}
+
+const updateUser = async (data) => {
+    try{
+        console.log(data);
+        return users.findByIdAndUpdate({_id: data.id}, data.updateData);
+    }catch(error){
+        return error;
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getUser,
+    updateUser
 }

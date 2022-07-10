@@ -4,8 +4,19 @@ mongoose.pluralize(null);
 const UserSchema = new mongoose.Schema({
     username:{
         type: String,
-        required: true,
-        unique: true
+        required: true
+    },
+
+    first_name:{
+        type: String
+    },
+
+    last_name:{
+        type: String
+    },
+
+    mobile_number:{
+        type: String
     },
 
     email: {
